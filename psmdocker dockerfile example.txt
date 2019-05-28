@@ -1,0 +1,21 @@
+# set proxy for download
+MAINTAINER siju.x.thomas@oracle.com
+# set proxy for download
+ENV http_proxy http://www-proxy.us.oracle.com:80
+ENV https_proxy http://www-proxy.us.oracle.com:80
+ENV ftp_proxy http://www-proxy.us.oracle.com:80
+# install yum packages
+RUN yum -y install unzip
+#RUN unset http_proxy && unset https_proxy && unset ftp_proxy
+#VOLUME ["/data"]
+RUN bash -c "mkdir /data"
+WORKDIR /data
+COPY artifacts /data
+#COPY --chown=psmuser artifacts /data
+#RUN chown -R psmuser /data
+#EXPOSE 1521 7101 7103 8080 8081 22
+RUN bash -c "chown -R psmuser /data;/data/scripts/psm.sh;ls /data;rm -rf /data/*;ls /data"
+#RUN bash -c "/data/scripts/psm.sh;ls /data;rm -rf /data/*;ls /data"
+#USER root
+#RUN bash -c "rm -rf /data/*"
+#ENTRYPOINT ["/scratch/psmuser/start-psmdocker.sh"]
